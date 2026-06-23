@@ -1,167 +1,197 @@
-# SiteVault 🔐
+<div align="center">
 
-A Chrome browser extension that lets you password-protect any website with a single master password. Only you can unlock protected sites.
+<img src="icons/icon128.png" alt="SiteVault Logo" width="80" />
+
+# 🔐 SiteVault
+
+**Password-protect any website in Chrome. Only you can unlock it.**
+
+[![Version](https://img.shields.io/badge/version-1.0.0-6357ff?style=flat-square)](https://github.com/ankitkashikar/sitevault-extension/releases)
+[![Manifest](https://img.shields.io/badge/Manifest-V3-green?style=flat-square)](https://developer.chrome.com/docs/extensions/mv3/)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](https://github.com/ankitkashikar/sitevault-extension/pulls)
+
+[Installation](#installation) · [Features](#features) · [How It Works](#how-it-works) · [Roadmap](#roadmap) · [Contributing](#contributing)
+
+</div>
+
+---
+
+## What is SiteVault?
+
+SiteVault is a Chrome Extension that lets you put a **master password lock** in front of any website. When you (or anyone else) visits a locked site, a full-screen password overlay blocks access until the correct password is entered.
+
+Perfect for protecting:
+- Personal dashboards with private data
+- Financial or business analytics pages
+- Admin panels and internal tools
+- Any site you don't want others casually opening
+
+---
 
 ## Features
 
-✨ **Master Password Protection** - Set up a single master password that protects all your locked sites
+| Feature | Status |
+|---|---|
+| 🔒 Master password protection for any site | ✅ v1 |
+| ⚡ Lock current tab with one click | ✅ v1 |
+| 🎨 Clean, dark-themed lock screen overlay | ✅ v1 |
+| 🔑 SHA-256 password hashing (never stored in plain text) | ✅ v1 |
+| 🌐 Subdomain-aware locking | ✅ v1 |
+| 🔄 Session-scoped unlock (locked again when tab closes) | ✅ v1 |
+| ☁️ Cloud sync across browsers via Chrome Sync | 🔜 v2 |
+| 📱 OTP / TOTP unlock (Google Authenticator compatible) | 🔜 v2 |
+| 📋 Local access logs (who tried, when, which site) | 🔜 v2 |
+| 🔗 Temporary unlock links | 🔜 v2 |
+| 👥 Team vaults & enterprise dashboard | 🔜 v3 |
 
-🔒 **One-Click Site Locking** - Lock the current tab's website instantly or add sites manually
+---
 
-🎯 **Easy Management** - Add, remove, and manage protected sites from a clean, intuitive popup interface
+## Why SiteVault?
 
-🔑 **Secure Password Hashing** - Uses SHA-256 hashing for password security (stored locally in Chrome storage)
+Every existing tool is missing something critical:
 
-⚡ **Lightweight** - Minimal resource usage; works seamlessly in the background
+| Product | Password Lock | Cloud Sync | OTP | Access Logs | Temp Links | Teams | Price |
+|---|---|---|---|---|---|---|---|
+| Any Site Lock | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | Free |
+| Website Protector | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | Free |
+| BlockSite | Partial | ✅ | ❌ | ❌ | ❌ | ❌ | $9/mo |
+| Freedom | Partial | ✅ | ❌ | ❌ | ❌ | ✅ | $8/mo |
+| Cold Turkey | Partial | ❌ | ❌ | ❌ | ❌ | ❌ | One-time |
+| **🔐 SiteVault** | **✅** | **✅ v2** | **✅ v2** | **✅ v2** | **✅ v2** | **✅ v3** | **Free → Pro** |
 
-🌐 **Cross-Domain Support** - Automatically detects and locks subdomains of protected sites
+**SiteVault is the only tool that will offer the complete package.**
 
-## How It Works
-
-1. **First Setup**: When you first install the extension, create a master password (minimum 6 characters). This password will protect all your locked sites and cannot be recovered if forgotten.
-
-2. **Locking Sites**: 
-   - Click the **"Lock current tab's website"** button to quickly lock the website you're currently viewing
-   - Or manually enter a domain in the text field and click **Add**
-
-3. **Unlocking**: 
-   - When you try to visit a locked site, a password prompt appears
-   - Enter your master password to unlock the site for the current tab session
-   - The tab remains unlocked until you close it
-
-4. **Managing Sites**: 
-   - View all locked sites in the popup interface
-   - Remove sites by clicking the × button next to any site
-   - Change your master password anytime from the main interface
+---
 
 ## Installation
 
-1. Clone or download this repository
-2. Open Chrome and go to `chrome://extensions/`
-3. Enable **Developer mode** (toggle in top-right corner)
-4. Click **Load unpacked** and select this repository folder
-5. The SiteVault extension will now appear in your Chrome toolbar
+### Load unpacked (Developer mode)
 
-## Usage
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/ankitkashikar/sitevault-extension.git
+   ```
 
-### Setting Up
-- Click the SiteVault extension icon in your Chrome toolbar
-- Enter a strong master password and confirm it
-- Click **Create Password & Get Started**
+2. Open Chrome and navigate to:
+   ```
+   chrome://extensions/
+   ```
 
-### Locking Websites
-- Navigate to the website you want to protect
-- Click the SiteVault icon and choose **"Lock current tab's website"**
-- Or manually type a domain and click **Add**
+3. Enable **Developer mode** (toggle in the top-right corner)
 
-### Unlocking Websites
-- Try to visit a locked site
-- A popup will appear asking for your master password
-- Enter the correct password to unlock the site for the current session
+4. Click **Load unpacked** and select the cloned `sitevault-extension` folder
 
-### Changing Your Password
-- Click the SiteVault icon
-- Click **Change password**
-- Enter your current password, then your new password
-- Click **Update Password**
+5. The 🔐 SiteVault icon will appear in your Chrome toolbar
 
-### Removing a Site
-- Click the SiteVault icon
-- Click the × button next to the site you want to remove
-- The site will no longer be protected
+> Chrome Web Store release coming soon!
 
-### Reset Everything
-- Click the SiteVault icon
-- Click **Reset all** 
-- Confirm the action
-- All sites and your master password will be deleted
+---
+
+## How It Works
+
+### First setup
+Click the SiteVault icon → create your master password (min 6 chars) → you're done. The password is hashed with SHA-256 and stored locally. It's never recoverable, so choose something memorable.
+
+### Locking a site
+- Click **"Lock current tab's website"** to instantly lock whatever you're viewing
+- Or type any domain (e.g. `analytics.myapp.com`) and click **Add**
+
+### Visiting a locked site
+A full-screen dark overlay blocks the page. Enter your master password to unlock — the site stays accessible until you close that tab.
+
+### Managing your vault
+From the popup you can:
+- View all locked sites with favicons
+- Remove any site with ×
+- Change your master password
+- Reset everything
+
+---
 
 ## File Structure
 
 ```
 sitevault-extension/
-├── manifest.json          # Extension configuration
-├── popup.html             # Popup UI interface
-├── popup.js               # Popup interaction logic
-├── background.js          # Background service worker (lock/unlock logic)
-├── icons/                 # Extension icons
+├── manifest.json        # Extension config (Manifest V3)
+├── background.js        # Service worker — intercepts tabs, verifies passwords
+├── content.js           # Content script placeholder
+├── popup.html           # Extension popup UI
+├── popup.js             # Popup logic — site management, password flows
+├── icons/
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
-└── README.md             # This file
+└── README.md
 ```
-
-## Key Files Explained
-
-### `manifest.json`
-- Defines the extension as a Manifest V3 Chrome extension
-- Declares permissions for storage, tabs, and scripting
-- Registers the background service worker and popup interface
-
-### `popup.js`
-- Manages the extension popup UI and user interactions
-- Handles site list rendering, adding/removing sites
-- Manages password setup and changing
-- Uses SHA-256 hashing for password storage
-
-### `background.js`
-- Monitors tab updates and detects navigation to locked sites
-- Injects the lock screen overlay when a locked site is visited
-- Handles password verification via message passing
-- Manages session-based unlock state
-
-## Security Notes
-
-⚠️ **Important**: 
-- Your master password is hashed using SHA-256 and stored locally in Chrome's storage
-- Only the hash is stored, never the actual password
-- If you forget your master password, **it cannot be recovered**
-- Sites are locked only when you visit them; the extension doesn't prevent direct access via URL bar
-
-## Browser Compatibility
-
-- ✅ Chrome (Manifest V3)
-- ✅ Edge (Manifest V3)
-- ⚠️ Other Chromium-based browsers (may work, not officially tested)
-
-## Privacy
-
-- All data is stored **locally** on your computer in Chrome's local storage
-- No data is sent to external servers or services
-- No analytics or tracking
-- Your locked sites list and password hash never leave your device
-
-## Development
-
-This extension is built with:
-- **JavaScript** - Core logic and functionality
-- **HTML** - Popup interface
-- **CSS** - Styling and UI design
-- **Chrome Extension APIs** - Storage, tabs, scripting
-
-## Troubleshooting
-
-### Password prompt doesn't appear when visiting a locked site
-- Ensure you've added the site correctly (check for typos)
-- Try refreshing the page
-- Make sure the extension has permission to run on the site
-
-### I forgot my master password
-- Unfortunately, master passwords cannot be recovered
-- You'll need to reset all settings and create a new password
-
-### A site isn't getting locked even though I added it
-- The site must be accessed via `http://` or `https://`
-- Some pages (like new tab page, extensions page) cannot be locked
-
-## License
-
-This project is open source and available for personal and educational use.
-
-## Support
-
-For issues, questions, or suggestions, please open an issue in the repository.
 
 ---
 
-**Made with ❤️ by [ankitkashikar](https://github.com/ankitkashikar)**
+## Security
+
+- Passwords are hashed with **SHA-256** via the Web Crypto API — only the hash is ever stored
+- Unlock state is scoped to the **tab session** using `chrome.storage.session` — closes when the tab closes
+- All data lives **locally on your device** — nothing is sent to any server (v1)
+- Cloud sync in v2 will use **Chrome's built-in encrypted sync** — no third-party backend
+
+> ⚠️ If you forget your master password, it cannot be recovered. Use **Reset all** to start fresh.
+
+---
+
+## Roadmap
+
+### v2 — Coming next
+- [ ] `chrome.storage.sync` — encrypted site list synced across all your Chrome browsers
+- [ ] TOTP unlock — scan a QR code in Google Authenticator / Authy as a second unlock method
+- [ ] Access logs — timestamped log of every unlock attempt, stored locally
+- [ ] Temporary unlock links — generate a time-limited token to let someone else view a locked site
+
+### v3 — Later
+- [ ] Team vaults — shared site lists for small teams
+- [ ] Enterprise dashboard — admin controls, member management
+- [ ] Chrome Web Store release
+
+---
+
+## Browser Compatibility
+
+| Browser | Support |
+|---|---|
+| Chrome | ✅ Full support |
+| Edge (Chromium) | ✅ Works |
+| Brave | ✅ Works |
+| Firefox | ❌ Not supported (Manifest V3 differences) |
+
+---
+
+## Contributing
+
+Pull requests are welcome! For major changes, open an issue first to discuss what you'd like to change.
+
+```bash
+git clone https://github.com/ankitkashikar/sitevault-extension.git
+cd sitevault-extension
+
+# make your changes, then:
+git checkout -b feat/your-feature-name
+git commit -m "feat: describe your change"
+git push origin feat/your-feature-name
+```
+
+Then open a PR against `main`.
+
+---
+
+## License
+
+MIT — free for personal and commercial use.
+
+---
+
+<div align="center">
+
+Made with ❤️ by [ankitkashikar](https://github.com/ankitkashikar)
+
+⭐ Star this repo if you find it useful!
+
+</div>
