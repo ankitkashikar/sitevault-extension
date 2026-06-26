@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
   "name": "SiteVault",
-  "version": "1.0.0",
-  "description": "Password protect any website. Only you can unlock it.",
+  "version": "2.0.0",
+  "description": "Password protect any website. Cloud sync, OTP unlock, access logs & temporary links.",
   "permissions": [
     "storage",
     "tabs",
-    "scripting"
+    "scripting",
+    "alarms"
   ],
   "host_permissions": [
     "<all_urls>"
