@@ -360,26 +360,46 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   // Generate OTP secret + QR data
   if (msg.type === 'GENERATE_OTP_SECRET') {
     (async () => {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-      let secret = '';
-      const arr = new Uint8Array(20);
-      crypto.getRandomValues(arr);
-      arr.forEach(b => { secret += chars[b % 32]; });
-      const otpAuthUrl = `otpauth://totp/SiteVault?secret=${secret}&issuer=SiteVault`;
+      // Reuse existing pending secret — prevents new QR on every re-render
+      const existing = await chrome.storage.local.get('pendingOtpSecret');
+      let secret = existing.pendingOtpSecret;
+      if (!secret) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+        secret = '';
+        const arr = new Uint8Array(20);
+        crypto.getRandomValues(arr);
+        arr.forEach(b => { secret += chars[b % 32]; });
+        await chrome.storage.local.set({ pendingOtpSecret: secret });
+      }
+      const otpAuthUrl = `otpauth://totp/SiteVault:vault@sitevault.app?secret=${secret}&issuer=SiteVault&algorithm=SHA1&digits=6&period=30`;
       sendResponse({ secret, otpAuthUrl });
     })();
     return true;
   }
 
-  // Save OTP secret
+  // Save OTP secret (moves from pending to confirmed)
   if (msg.type === 'SAVE_OTP_SECRET') {
-    chrome.storage.sync.set({ otpSecret: msg.secret }, () => sendResponse({ success: true }));
+    (async () => {
+      await chrome.storage.sync.set({ otpSecret: msg.secret });
+      await chrome.storage.local.remove('pendingOtpSecret');
+      sendResponse({ success: true });
+    })();
     return true;
   }
 
   // Remove OTP
   if (msg.type === 'REMOVE_OTP') {
-    chrome.storage.sync.remove('otpSecret', () => sendResponse({ success: true }));
+    (async () => {
+      await chrome.storage.sync.remove('otpSecret');
+      await chrome.storage.local.remove('pendingOtpSecret');
+      sendResponse({ success: true });
+    })();
+    return true;
+  }
+
+  // Clear pending OTP (user cancelled setup)
+  if (msg.type === 'CLEAR_PENDING_OTP') {
+    chrome.storage.local.remove('pendingOtpSecret', () => sendResponse({ success: true }));
     return true;
   }
 
