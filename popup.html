@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SiteVault</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      width: 340px;
+      width: 360px;
       background: #0f0f11;
       color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -18,335 +16,340 @@
 
     /* ── Header ── */
     .header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 18px 18px 14px;
-      border-bottom: 0.5px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; gap: 10px;
+      padding: 16px 16px 0;
     }
     .logo {
-      width: 32px; height: 32px;
-      background: rgba(99,87,255,0.18);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
+      width: 30px; height: 30px;
+      background: rgba(99,87,255,0.2); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
     }
-    .header-text h1 {
-      font-size: 15px;
-      font-weight: 500;
-      letter-spacing: -0.3px;
+    .header-title { font-size: 15px; font-weight: 500; letter-spacing: -0.3px; }
+    .header-badge {
+      margin-left: auto;
+      background: rgba(99,87,255,0.2); color: #8b82ff;
+      font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px;
     }
-    .header-text p {
-      font-size: 11px;
+
+    /* ── Nav tabs ── */
+    .nav {
+      display: flex; gap: 2px;
+      padding: 12px 16px 0;
+      border-bottom: 0.5px solid rgba(255,255,255,0.07);
+    }
+    .nav-btn {
+      padding: 7px 11px;
+      border: none; border-radius: 7px 7px 0 0;
+      background: transparent;
       color: rgba(255,255,255,0.35);
-      margin-top: 1px;
+      font-size: 12px; font-weight: 500; font-family: inherit; cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s;
     }
+    .nav-btn:hover { color: rgba(255,255,255,0.65); }
+    .nav-btn.active { color: #fff; border-bottom-color: #6357ff; }
+    .nav-icon { font-size: 13px; }
 
-    /* ── Views ── */
-    .view { display: none; padding: 18px; }
-    .view.active { display: block; }
-
-    /* ── Setup view ── */
-    .setup-icon {
-      text-align: center;
-      font-size: 36px;
-      margin: 8px 0 14px;
-    }
-    .setup-title {
-      text-align: center;
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-    .setup-sub {
-      text-align: center;
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 22px;
-      line-height: 1.6;
-    }
+    /* ── Panels ── */
+    .panel { display: none; padding: 16px; max-height: 460px; overflow-y: auto; }
+    .panel.active { display: block; }
+    .panel::-webkit-scrollbar { width: 3px; }
+    .panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
 
     /* ── Form elements ── */
-    label {
-      display: block;
-      font-size: 11px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-bottom: 6px;
+    .field-label {
+      font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.4);
+      letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; display: block;
     }
-    input[type="password"],
-    input[type="text"] {
-      width: 100%;
-      padding: 9px 12px;
+    input[type="text"], input[type="password"], select {
+      width: 100%; padding: 9px 12px;
       background: rgba(255,255,255,0.06);
       border: 0.5px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      color: #fff;
-      font-size: 13px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.15s;
-      margin-bottom: 14px;
+      border-radius: 8px; color: #fff; font-size: 13px; font-family: inherit;
+      outline: none; transition: border-color 0.15s; margin-bottom: 12px;
     }
-    input:focus {
-      border-color: rgba(99,87,255,0.6);
-    }
+    input:focus { border-color: rgba(99,87,255,0.6); }
     input::placeholder { color: rgba(255,255,255,0.2); }
+    select { cursor: pointer; }
+    select option { background: #1a1a1f; }
 
     .btn {
-      width: 100%;
-      padding: 10px;
-      background: #6357ff;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
-      letter-spacing: -0.2px;
+      padding: 9px 14px; border: none; border-radius: 8px;
+      color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
       transition: opacity 0.15s;
     }
-    .btn:hover { opacity: 0.88; }
-    .btn:active { opacity: 0.75; }
-    .btn.secondary {
-      background: rgba(255,255,255,0.06);
-      border: 0.5px solid rgba(255,255,255,0.1);
-    }
-    .btn.danger {
-      background: rgba(255,80,80,0.15);
-      border: 0.5px solid rgba(255,80,80,0.25);
-      color: #ff6b6b;
-    }
+    .btn:hover { opacity: 0.85; }
+    .btn.primary { background: #6357ff; }
+    .btn.secondary { background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.1); }
+    .btn.danger { background: rgba(255,80,80,0.15); border: 0.5px solid rgba(255,80,80,0.25); color: #ff6b6b; }
+    .btn.success-btn { background: rgba(34,197,94,0.15); border: 0.5px solid rgba(34,197,94,0.25); color: #22c55e; }
+    .btn.full { width: 100%; }
+    .btn.sm { font-size: 11px; padding: 6px 10px; }
 
-    /* ── Main view ── */
+    .row { display: flex; gap: 8px; margin-bottom: 12px; align-items: flex-start; }
+    .row input { margin-bottom: 0; }
+
+    .divider { height: 0.5px; background: rgba(255,255,255,0.07); margin: 14px 0; }
+
+    /* ── Alerts ── */
+    .alert {
+      padding: 8px 12px; border-radius: 8px; font-size: 12px;
+      margin-bottom: 12px; display: none; line-height: 1.5;
+    }
+    .alert.error { background: rgba(255,80,80,0.1); border: 0.5px solid rgba(255,80,80,0.2); color: #ff6b6b; }
+    .alert.success { background: rgba(34,197,94,0.1); border: 0.5px solid rgba(34,197,94,0.2); color: #22c55e; }
+    .alert.info { background: rgba(99,87,255,0.1); border: 0.5px solid rgba(99,87,255,0.2); color: #8b82ff; }
+
+    /* ── Section label ── */
     .section-label {
-      font-size: 10px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
+      font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.3);
+      letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 10px;
     }
 
-    .add-site-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    .add-site-row input {
-      flex: 1;
-      margin-bottom: 0;
-    }
-    .add-site-row button {
-      padding: 9px 14px;
-      background: #6357ff;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
-    }
-    .add-site-row button:hover { opacity: 0.85; }
-
+    /* ── Sites list ── */
     .add-current-btn {
-      width: 100%;
-      padding: 8px;
-      background: rgba(99,87,255,0.1);
-      border: 0.5px dashed rgba(99,87,255,0.4);
-      border-radius: 8px;
-      color: rgba(99,87,255,0.9);
-      font-size: 12px;
-      cursor: pointer;
-      font-family: inherit;
-      margin-bottom: 16px;
+      width: 100%; padding: 8px;
+      background: rgba(99,87,255,0.1); border: 0.5px dashed rgba(99,87,255,0.4);
+      border-radius: 8px; color: rgba(120,110,255,0.9); font-size: 12px;
+      cursor: pointer; font-family: inherit; margin-bottom: 12px;
       transition: background 0.15s;
     }
     .add-current-btn:hover { background: rgba(99,87,255,0.18); }
 
-    /* ── Site list ── */
-    .site-list {
-      list-style: none;
-      max-height: 220px;
-      overflow-y: auto;
-      margin-bottom: 16px;
-    }
-    .site-list::-webkit-scrollbar { width: 3px; }
-    .site-list::-webkit-scrollbar-track { background: transparent; }
-    .site-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-
+    .site-list { list-style: none; margin-bottom: 14px; }
     .site-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      background: rgba(255,255,255,0.04);
-      border: 0.5px solid rgba(255,255,255,0.07);
-      border-radius: 8px;
-      margin-bottom: 6px;
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 11px;
+      background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.07);
+      border-radius: 8px; margin-bottom: 6px;
     }
     .site-favicon {
-      width: 18px; height: 18px;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.08);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px;
-      flex-shrink: 0;
-      overflow: hidden;
+      width: 18px; height: 18px; border-radius: 4px;
+      background: rgba(255,255,255,0.08); display: flex; align-items: center;
+      justify-content: center; font-size: 10px; flex-shrink: 0; overflow: hidden;
     }
     .site-favicon img { width: 18px; height: 18px; }
-    .site-name {
-      flex: 1;
-      font-size: 13px;
-      color: rgba(255,255,255,0.85);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+    .site-name { flex: 1; font-size: 13px; color: rgba(255,255,255,0.8); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .site-remove {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.2);
-      cursor: pointer;
-      font-size: 16px;
-      padding: 2px 4px;
-      line-height: 1;
-      border-radius: 4px;
+      background: none; border: none; color: rgba(255,255,255,0.2);
+      cursor: pointer; font-size: 16px; padding: 2px 4px; line-height: 1;
       transition: color 0.15s;
     }
     .site-remove:hover { color: #ff6b6b; }
 
     .empty-state {
-      text-align: center;
-      padding: 24px 0;
-      color: rgba(255,255,255,0.25);
-      font-size: 12px;
-      line-height: 1.7;
+      text-align: center; padding: 20px 0;
+      color: rgba(255,255,255,0.25); font-size: 12px; line-height: 1.8;
     }
 
-    /* ── Divider ── */
-    .divider {
-      height: 0.5px;
-      background: rgba(255,255,255,0.07);
-      margin: 4px 0 16px;
+    /* ── Logs ── */
+    .log-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 11px;
+      background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.06);
+      border-radius: 8px; margin-bottom: 5px;
+    }
+    .log-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .log-dot.success { background: #22c55e; }
+    .log-dot.fail { background: #ef4444; }
+    .log-info { flex: 1; overflow: hidden; }
+    .log-site { font-size: 12px; color: rgba(255,255,255,0.75); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .log-meta { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 1px; }
+    .log-badge {
+      font-size: 10px; padding: 2px 6px; border-radius: 4px; white-space: nowrap;
+    }
+    .log-badge.password { background: rgba(99,87,255,0.15); color: #8b82ff; }
+    .log-badge.otp { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .log-badge.temp_link { background: rgba(251,191,36,0.15); color: #fbbf24; }
+
+    /* ── OTP Setup ── */
+    .otp-status {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px; background: rgba(255,255,255,0.04);
+      border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; margin-bottom: 14px;
+    }
+    .otp-status-icon { font-size: 20px; }
+    .otp-status-text { flex: 1; }
+    .otp-status-title { font-size: 13px; font-weight: 500; }
+    .otp-status-sub { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+
+    .qr-container {
+      text-align: center; padding: 16px;
+      background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: 10px; margin-bottom: 12px;
+    }
+    .qr-container canvas { border-radius: 8px; }
+    .secret-box {
+      background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 8px 12px;
+      font-family: monospace; font-size: 13px; color: rgba(255,255,255,0.7);
+      letter-spacing: 2px; text-align: center; word-break: break-all;
+      margin-bottom: 12px; cursor: pointer; user-select: all;
     }
 
-    /* ── Footer actions ── */
-    .footer-row {
-      display: flex;
-      gap: 8px;
+    /* ── Temp links ── */
+    .token-item {
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.07);
+      border-radius: 8px; margin-bottom: 6px;
     }
-    .footer-row .btn { font-size: 12px; padding: 8px; }
+    .token-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .token-site { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); flex: 1; }
+    .token-expires { font-size: 10px; color: rgba(255,255,255,0.3); }
+    .token-url {
+      font-size: 11px; color: rgba(99,87,255,0.8);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 6px; cursor: pointer;
+    }
+    .token-actions { display: flex; gap: 6px; }
 
-    /* ── Alerts ── */
-    .alert {
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      margin-bottom: 12px;
-      display: none;
+    /* ── Settings ── */
+    .settings-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.07);
+      border-radius: 8px; margin-bottom: 8px;
     }
-    .alert.error {
-      background: rgba(255,80,80,0.1);
-      border: 0.5px solid rgba(255,80,80,0.2);
-      color: #ff6b6b;
-    }
-    .alert.success {
-      background: rgba(40,200,120,0.1);
-      border: 0.5px solid rgba(40,200,120,0.2);
-      color: #28c878;
-    }
+    .settings-icon { font-size: 16px; }
+    .settings-text { flex: 1; }
+    .settings-title { font-size: 13px; color: rgba(255,255,255,0.8); }
+    .settings-sub { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 1px; }
 
-    /* ── Change password view ── */
-    .back-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.4);
-      font-size: 12px;
-      cursor: pointer;
-      font-family: inherit;
-      padding: 0;
-      margin-bottom: 18px;
-    }
-    .back-btn:hover { color: rgba(255,255,255,0.7); }
+    /* ── Setup view ── */
+    #view-setup { padding: 24px 20px; }
+    .setup-icon { text-align: center; font-size: 40px; margin-bottom: 14px; }
+    .setup-title { text-align: center; font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+    .setup-sub { text-align: center; font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 24px; line-height: 1.6; }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <div class="logo">🔐</div>
-    <div class="header-text">
-      <h1>SiteVault</h1>
-      <p id="header-sub">Password protect any website</p>
-    </div>
-  </div>
-
   <!-- ── Setup view (first run) ── -->
-  <div class="view active" id="view-setup">
+  <div id="view-setup" style="display:none;">
     <div class="setup-icon">🔑</div>
     <div class="setup-title">Create your master password</div>
-    <div class="setup-sub">This password will protect all your locked sites.<br>Choose something memorable — it can't be recovered.</div>
-
+    <div class="setup-sub">Protects all your locked sites.<br>Hashed with SHA-256 — never recoverable.</div>
     <div class="alert error" id="setup-error"></div>
-
-    <label>Master Password</label>
+    <label class="field-label">Master Password</label>
     <input type="password" id="setup-pass" placeholder="At least 6 characters" autocomplete="new-password" />
-
-    <label>Confirm Password</label>
+    <label class="field-label">Confirm Password</label>
     <input type="password" id="setup-confirm" placeholder="Repeat password" autocomplete="new-password" />
-
-    <button class="btn" id="setup-btn">Create Password & Get Started</button>
+    <button class="btn primary full" id="setup-btn">Create Password & Get Started</button>
   </div>
 
-  <!-- ── Main view ── -->
-  <div class="view" id="view-main">
-    <div class="section-label">Protected sites</div>
+  <!-- ── Main app ── -->
+  <div id="view-main" style="display:none;">
 
-    <button class="add-current-btn" id="add-current-btn">＋ Lock current tab's website</button>
-
-    <div class="add-site-row">
-      <input type="text" id="manual-site-input" placeholder="example.com" />
-      <button id="manual-add-btn">Add</button>
+    <div class="header">
+      <div class="logo">🔐</div>
+      <div class="header-title">SiteVault</div>
+      <span class="header-badge">v2.0</span>
     </div>
 
-    <div class="alert error" id="main-error"></div>
-    <div class="alert success" id="main-success"></div>
-
-    <ul class="site-list" id="site-list"></ul>
-
-    <div class="divider"></div>
-
-    <div class="footer-row">
-      <button class="btn secondary" id="change-pass-btn">Change password</button>
-      <button class="btn danger" id="reset-btn">Reset all</button>
+    <div class="nav">
+      <button class="nav-btn active" data-panel="sites"><span class="nav-icon">🔒</span> Sites</button>
+      <button class="nav-btn" data-panel="logs"><span class="nav-icon">📋</span> Logs</button>
+      <button class="nav-btn" data-panel="otp"><span class="nav-icon">📱</span> OTP</button>
+      <button class="nav-btn" data-panel="links"><span class="nav-icon">🔗</span> Links</button>
+      <button class="nav-btn" data-panel="settings"><span class="nav-icon">⚙️</span> Settings</button>
     </div>
-  </div>
 
-  <!-- ── Change password view ── -->
-  <div class="view" id="view-change-pass">
-    <button class="back-btn" id="back-btn">← Back</button>
+    <!-- Sites panel -->
+    <div class="panel active" id="panel-sites">
+      <button class="add-current-btn" id="add-current-btn">＋ Lock current tab's website</button>
+      <div class="row">
+        <input type="text" id="manual-site-input" placeholder="example.com" style="margin-bottom:0;" />
+        <button class="btn primary" id="manual-add-btn">Add</button>
+      </div>
+      <div class="alert error" id="sites-error"></div>
+      <div class="alert success" id="sites-success"></div>
+      <ul class="site-list" id="site-list"></ul>
+    </div>
 
-    <label>Current Password</label>
-    <input type="password" id="cp-current" placeholder="Your current password" />
+    <!-- Logs panel -->
+    <div class="panel" id="panel-logs">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="section-label" style="margin:0;flex:1;">Access history</div>
+        <button class="btn sm danger" id="clear-logs-btn">Clear all</button>
+      </div>
+      <div id="logs-list"></div>
+    </div>
 
-    <label>New Password</label>
-    <input type="password" id="cp-new" placeholder="At least 6 characters" />
+    <!-- OTP panel -->
+    <div class="panel" id="panel-otp">
+      <div id="otp-status-area"></div>
+      <div id="otp-setup-area"></div>
+    </div>
 
-    <label>Confirm New Password</label>
-    <input type="password" id="cp-confirm" placeholder="Repeat new password" />
+    <!-- Temp Links panel -->
+    <div class="panel" id="panel-links">
+      <div class="section-label">Generate temporary unlock link</div>
+      <label class="field-label">Site to unlock</label>
+      <input type="text" id="link-site-input" placeholder="example.com" />
+      <label class="field-label">Expires after</label>
+      <select id="link-duration">
+        <option value="15">15 minutes</option>
+        <option value="30">30 minutes</option>
+        <option value="60" selected>1 hour</option>
+        <option value="240">4 hours</option>
+        <option value="1440">24 hours</option>
+      </select>
+      <button class="btn primary full" id="generate-link-btn">Generate Link</button>
+      <div class="alert error" id="links-error"></div>
+      <div class="alert success" id="links-success"></div>
 
-    <div class="alert error" id="cp-error"></div>
-    <div class="alert success" id="cp-success"></div>
+      <div class="divider"></div>
+      <div class="section-label">Active links</div>
+      <div id="tokens-list"></div>
+    </div>
 
-    <button class="btn" id="cp-save-btn">Update Password</button>
+    <!-- Settings panel -->
+    <div class="panel" id="panel-settings">
+      <div class="section-label">Password</div>
+      <div class="settings-row">
+        <span class="settings-icon">🔑</span>
+        <div class="settings-text">
+          <div class="settings-title">Change master password</div>
+          <div class="settings-sub">Update your vault password</div>
+        </div>
+        <button class="btn sm secondary" id="change-pass-btn">Change</button>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">Sync</div>
+      <div class="settings-row">
+        <span class="settings-icon">☁️</span>
+        <div class="settings-text">
+          <div class="settings-title">Cloud sync enabled</div>
+          <div class="settings-sub">Sites sync via Chrome Sync automatically</div>
+        </div>
+        <span style="color:#22c55e;font-size:12px;">✓ Active</span>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">Danger zone</div>
+      <button class="btn danger full" id="reset-btn">Reset everything</button>
+
+      <!-- Change password sub-form -->
+      <div id="change-pass-form" style="display:none;margin-top:14px;">
+        <div class="divider"></div>
+        <div class="section-label">Change password</div>
+        <input type="password" id="cp-current" placeholder="Current password" />
+        <input type="password" id="cp-new" placeholder="New password (min 6 chars)" />
+        <input type="password" id="cp-confirm" placeholder="Confirm new password" />
+        <div class="alert error" id="cp-error"></div>
+        <div class="alert success" id="cp-success"></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn secondary" id="cp-cancel-btn">Cancel</button>
+          <button class="btn primary" style="flex:1;" id="cp-save-btn">Update Password</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="popup.js"></script>
